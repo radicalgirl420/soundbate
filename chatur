@@ -1,0 +1,83 @@
+// ==UserScript==
+// @name          Chaturbate Sound replacer 2.0
+// @version       2.4
+// @include       https://chaturbate.com/radicalgirl420/
+// @include      https://chaturbate.com/b/radicalgirl420/
+// @include   https://testbed.chaturbate.com/b/radicalgirl420/
+// @grant         none
+
+// ==/UserScript==
+
+function playAudio(level2, tipAmount) {
+var msToAdd = 0;
+    var snd = new Audio("https://chaturbate.com/static/sounds/tiny.mp3");
+    if (level2 == 'huge') {
+        if (tipAmount<3000){
+snd = new Audio("http://somniamia.com/wp-content/uploads/2016/06/poison-bbd.ogg");
+msToAdd = ((tipAmount-500)*40);
+snd.addEventListener("canplaythrough", function () {
+setTimeout(function(){
+snd.pause();},30000+msToAdd);
+}, false); }
+else {snd = new Audio("http://somniamia.com/wp-content/uploads/2016/06/poison-bbd.ogg");}
+    } else if (level2 == 'large') {
+        if (tipAmount>=500){
+snd = new Audio("http://somniamia.com/wp-content/uploads/2016/06/poison-bbd.ogg");
+msToAdd = ((tipAmount-500)*40);
+snd.addEventListener("canplaythrough", function () {
+setTimeout(function(){
+snd.pause();},30000+msToAdd);
+}, false); }
+else {snd = new Audio("http://somniamia.com/wp-content/uploads/2016/06/poison-bbd.ogg");}
+    } else if (level2 == 'medium') {
+        snd = new Audio("http://somniamia.com/wp-content/uploads/2016/04/large-30sec.ogg");
+        if (tipAmount>100){
+msToAdd = ((tipAmount-100)*50);
+snd.addEventListener("canplaythrough", function () {
+setTimeout(function(){
+snd.pause();},10000+msToAdd);
+}, false); }
+else {snd = new Audio("http://somniamia.com/wp-content/uploads/2016/04/medium-10sec.ogg");}
+
+    } else if (level2 == 'small') {
+        if (tipAmount>15){
+snd = new Audio("http://somniamia.com/wp-content/uploads/2016/04/medium-10sec.ogg");
+msToAdd = ((tipAmount-15)*82);
+snd.addEventListener("canplaythrough", function () {
+setTimeout(function(){
+snd.pause();},3000+msToAdd);
+}, false); }
+ 
+else {snd = new Audio("http://somniamia.com/wp-content/uploads/2016/04/3sec-happy.ogg");}
+}
+    
+    snd.volume=1; 
+    snd.play();
+    return false;
+
+}
+
+
+var new_get_tip_sound_level = function(amount) {
+    lastAmount=amount;
+     //alert(lastAmount);
+     
+    if (amount >= 1000) {
+        playAudio('huge',amount);
+        return 'huge';
+    } else if (amount >= 500) {
+        playAudio('large',amount);
+        return 'large';
+    } else if (amount >= 100) {
+        playAudio('medium',amount);
+        return 'medium';
+    } else if (amount >= 15) {
+        playAudio('small',amount);
+        return 'small';
+    }
+    playAudio('tiny');
+    return 'tiny';
+};
+
+
+flash_handler.defchat_message_receiver._get_tip_sound_level = new_get_tip_sound_level;
